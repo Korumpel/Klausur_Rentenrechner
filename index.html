@@ -1,0 +1,80 @@
+
+
+<html>
+	<head>
+		<title>Nachschüssige Rentenrechnung</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<script>
+		"use strict";
+		function f() {
+
+		var vRente;
+		var vZinssatz;
+		var vLaufzeit;
+		var vAusgabeHtml = "";
+		var vZinsfaktor;
+		var i=0;
+		var vKapitalAnfang;
+		var vZinsen;
+		var vKapitalEnde;
+		var vRentenEnde;
+
+		vRente = parseFloat(document.getElementById("idRente").value);
+		vLaufzeit = parseFloat(document.getElementById("idLaufzeit").value);
+		vZinssatz =	parseFloat(document.getElementById("idProzentsatz").value/100);
+			vZinsfaktor =  1+ vZinssatz /100;
+
+		vRentenEnde = vRente * (Math.pow(vZinsfaktor, vLaufzeit) - 1) / (vZinsfaktor - 1)
+
+		vAusgabeHtml = vAusgabeHtml + "Der Rentenendwert beträgt: " + vRentenEnde.toFixed(2) + "€"
+
+		vAusgabeHtml = vAusgabeHtml + "<table border 1><tr><th>Jahr</th><th>Kapital am 1.1</th><th>Zinsen am 31.12</th><th>Rente am 31.12</th><th>Kapital am 31.12</th></tr>";
+
+		vZinsfaktor = 1+ vZinssatz;
+
+		while (i<=vLaufzeit){
+
+		vKapitalAnfang = vRente*((Math.pow(vZinsfaktor,i)-1)/vZinssatz);
+		vZinsen = vKapitalAnfang* vZinssatz;
+		vKapitalEnde = vKapitalAnfang + vZinsen + vRente;
+		
+		
+			if (i == vLaufzeit) {
+
+				vAusgabeHtml = vAusgabeHtml + "<tr> <td>" + i +  "</td> <td>" + vKapitalAnfang.toFixed(2) + " €" + "</td> <td>"+"</td> <td>"+"</td> <td>"+"</td> </tr>";
+				
+			} 
+			else {
+				
+				
+				vAusgabeHtml = vAusgabeHtml + "<tr> <td>" + i +  "</td> <td>" + vKapitalAnfang.toFixed(2) + " €" + "</td> <td>" + vZinsen.toFixed(2) + " €" + "</td> <td>" + vRente + " € "  + "</td> <td>" + vKapitalEnde.toFixed(2) + " € " + "</td> </tr>";
+			
+			
+
+			}
+
+			i ++;
+			
+
+		
+		
+		
+		
+
+   }
+
+		document.getElementById("idAusgabe").innerHTML = vAusgabeHtml;
+
+}
+	</script>
+	</head>
+
+	<body><h1>Nachschüssige Rentenrechnung</h1><br>
+	Zinssatz:<input id="idProzentsatz" value="2" type="text">%<br> </p>
+	Nachschüssige Rente:<input id="idRente" value="100" type="text">€<br> </p>
+	Laufzeit: <input id="idLaufzeit" value="5" type="text">Jahre<br> </p>
+
+	<button onclick="f();">Berechnen</button> </p>
+	<div id="idAusgabe"></div>
+
+</body></html>
